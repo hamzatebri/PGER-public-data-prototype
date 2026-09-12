@@ -32,7 +32,7 @@ MANIFEST_OUT = ROOT / "docs" / "EVENT_MATCHING_RELEASE_MANIFEST.json"
 
 CROSSWALK_VERSION = "v1-international-scope-only-temporal-window"
 
-# Frozen per event_id: geography rule and category rule. Never edited after a run.
+# Declared release rules. Changes require regenerated results and a new manifest.
 GEOGRAPHY_SCOPE = {
     "EVT-2022-001": "national",
     "EVT-2023-001": "international_only",

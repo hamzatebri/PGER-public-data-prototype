@@ -74,6 +74,8 @@ Stage 3's schema: `exposure_id`, `source_notice_id`, `contract_id`, `notice_type
 
 ## How to verify
 
+The hashes above identify the retained local files byte for byte. Git may change text line endings on another operating system. The current `source_audit.json` also provides `sha256_lf` for text files, allowing comparison after normalising CRLF to LF without changing data values.
+
 Run `python src/build_portfolio.py`, `python src/score_portfolio.py`,
 `python src/match_events_to_portfolio.py` and
 `python src/generate_source_audit.py` from the project root. Then run the

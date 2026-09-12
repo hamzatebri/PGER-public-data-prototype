@@ -87,13 +87,13 @@ INSIGHTS = {
     ),
     'live_discovery': (
         'The saved optional refresh contains 25 candidate reports from five providers. Agreement with the search target '
-        'ranges from 50% for trade policy to 83% for conflict and security, so this layer supports source discovery '
-        'without entering the frozen structural score or the main results.'
+        'ranges from 50% for trade policy to 83% for conflict and security. A search target is not a verified label, '
+        'so these percentages describe query routing rather than classification accuracy. The snapshot stays separate from the frozen score.'
     ),
     'ebae': (
         'In the latest displayed wave, five of eight responding firms report a negative or very negative effect of the '
         'war in Ukraine, while three report a neutral effect. The 15-firm sample adds practical business context but '
-        'remains supplementary to the procurement portfolio.'
+        'remains supplementary to the procurement portfolio. Sector counts are non-exclusive because some sample IDs appear in more than one sector across waves.'
     ),
     'dashboard_priority': (
         'The dashboard places the final score beside its three components, so a reviewer can see both the order and the '
@@ -1143,25 +1143,30 @@ cells = [
         window_sensitivity = pd.DataFrame(window_rows)
 
         score_plot = score_sensitivity.sort_values('rank_correlation')
-        fig, axes = plt.subplots(1, 2, figsize=(12.5, 5.6), gridspec_kw={'width_ratios': [1.35, 0.75]})
+        fig, axes = plt.subplots(1, 3, figsize=(15, 5.6), gridspec_kw={'width_ratios': [1, 1, 0.9]})
         y = np.arange(len(score_plot))
-        axes[0].hlines(y, score_plot['top_10_overlap_share'], score_plot['rank_correlation'], color='#BCC5CE', linewidth=2)
         axes[0].scatter(score_plot['rank_correlation'], y, color=BLUE, s=65, label='Rank correlation')
-        axes[0].scatter(score_plot['top_10_overlap_share'], y, color=ORANGE, marker='s', s=55, label='Top-10 overlap')
         axes[0].set_yticks(y, score_plot['scenario'])
-        axes[0].set_xlim(-0.03, 1.03)
-        axes[0].set_xlabel('Share or correlation (0 to 1)')
-        axes[0].set_title('A. Alternative score weights', loc='left', pad=35)
-        axes[0].legend(frameon=False, ncol=2, loc='lower left', bbox_to_anchor=(0.0, 1.01), fontsize=8.5)
+        axes[0].set_xlim(0.75, 1.03)
+        axes[0].set_xlabel('Spearman correlation (zoomed)')
+        axes[0].set_title('A. Overall ranking', loc='left')
         axes[0].grid(axis='y', visible=False)
+        retained = (score_plot['top_10_overlap_share'] * 10).round().astype(int)
+        axes[1].barh(y, retained, color=ORANGE)
+        axes[1].set_yticks(y, [''] * len(y))
+        axes[1].set_xlim(0, 11.5)
+        axes[1].set_xlabel('Original top ten retained (count)')
+        axes[1].set_title('B. First ten positions', loc='left')
+        for row, value in enumerate(retained):
+            axes[1].text(value + 0.15, row, f'{value}/10', va='center')
 
-        axes[1].bar(window_sensitivity['window_days'].astype(str), window_sensitivity['candidate_notices'], color=[TEAL, ORANGE, BLUE])
-        axes[1].set_xlabel('Days after latest official record')
-        axes[1].set_ylabel('Candidate notices')
-        axes[1].set_title('B. Event window', loc='left')
+        axes[2].bar(window_sensitivity['window_days'].astype(str), window_sensitivity['candidate_notices'], color=[TEAL, ORANGE, BLUE])
+        axes[2].set_xlabel('Days after latest official record')
+        axes[2].set_ylabel('Candidate notices')
+        axes[2].set_title('C. Event window', loc='left')
         for x, value in enumerate(window_sensitivity['candidate_notices']):
-            axes[1].text(x, value + window_sensitivity['candidate_notices'].max() * 0.025, f'{int(value)}', ha='center', fontweight='bold')
-        axes[1].set_ylim(0, window_sensitivity['candidate_notices'].max() * 1.15)
+            axes[2].text(x, value + window_sensitivity['candidate_notices'].max() * 0.025, f'{int(value)}', ha='center', fontweight='bold')
+        axes[2].set_ylim(0, window_sensitivity['candidate_notices'].max() * 1.15)
 
         fig.suptitle('The broad order is steadier than the first positions', x=0.01, ha='left', fontsize=16, fontweight='bold', color=NAVY)
         finish_figure(fig)
@@ -1245,6 +1250,9 @@ cells = [
         provider_order = ['tavily', 'guardian', 'newsapi', 'gnews', 'newsdata']
         provider_counts = live_snapshot['source'].value_counts().reindex(provider_order, fill_value=0)
         provider_ok = pd.Series({name: bool(provider_status.get(name, {}).get('ok')) for name in provider_order})
+        valid_predictions = live_snapshot['local_llm_predicted_family'].isin(
+            ['trade_policy', 'logistics_transport', 'conflict_security', 'not_relevant'])
+        assert valid_predictions.all(), 'Refresh produced unavailable classifications. Inspect them before comparing query topics.'
         agreement_by_query = (
             live_snapshot.assign(
                 agrees=lambda frame: frame['target_family_queried'].eq(frame['local_llm_predicted_family'])
@@ -1309,8 +1317,8 @@ cells = [
         axes[0].grid(axis='y', visible=False)
 
         axes[1].barh(sector_counts.index, sector_counts.values, color=BLUE)
-        axes[1].set_xlabel('Distinct anonymised firms')
-        axes[1].set_title('B. Firm coverage by reported sector', loc='left')
+        axes[1].set_xlabel('Distinct firm-sector pairs (non-exclusive)')
+        axes[1].set_title('B. Reported sectors across waves', loc='left')
         for y, value in enumerate(sector_counts.values):
             axes[1].text(value + 0.08, y, str(int(value)), va='center', fontweight='bold')
         axes[1].set_xlim(0, max(sector_counts.max(), 1) * 1.22)
@@ -1360,6 +1368,15 @@ cells = [
         """
         DASHBOARD_PORTS = tuple(range(8501, 8511))
         DASHBOARD_SCRIPT = (ROOT / 'dashboard' / 'dashboard.py').resolve()
+        dashboard_process = None
+
+        def streamlit_is_healthy(port):
+            from urllib.request import urlopen
+            try:
+                with urlopen(f'http://127.0.0.1:{port}/_stcore/health', timeout=2) as response:
+                    return response.status == 200 and response.read().strip() == b'ok'
+            except OSError:
+                return False
 
         def dashboard_responds(port, host='127.0.0.1', timeout=0.6):
             try:
@@ -1387,10 +1404,12 @@ cells = [
             return result.stdout.strip()
 
         def current_dashboard_responds(port):
-            if not dashboard_responds(port):
+            if not streamlit_is_healthy(port):
                 return False
-            if os.name != 'nt':
+            if dashboard_process is not None and dashboard_process.poll() is None and port == DASHBOARD_PORT:
                 return True
+            if os.name != 'nt':
+                return False
             return str(DASHBOARD_SCRIPT).lower() in listener_command_line(port).lower()
 
         DASHBOARD_PORT = next(

@@ -1,11 +1,13 @@
 {
-  "generated_utc": "2026-09-12T07:07:09.127509+00:00",
+  "generated_utc": "2026-09-12T17:40:03.229078+00:00",
   "purpose": "Submission source and processed-output identity check",
+  "hash_convention": "sha256 identifies local bytes. sha256_lf normalises CRLF to LF for text so Git checkouts on different platforms can be compared.",
   "files": [
     {
       "file": "data/raw/boe_procurement/licitaciones_contrataciones_BOE_2014_2024.csv",
       "size_bytes": 67396873,
       "sha256": "d40c6d8318075b48a6aeba376a1b7300f5ac363aaeb8d314534bdd4918b5256e",
+      "sha256_lf": "d40c6d8318075b48a6aeba376a1b7300f5ac363aaeb8d314534bdd4918b5256e",
       "content": {
         "format": "csv",
         "delimiter": ",",
@@ -51,6 +53,7 @@
       "file": "data/raw/ebae_sample/SampleFile.EBAE20T422T2_01.csv",
       "size_bytes": 26314,
       "sha256": "8a5a2db21a727f2ba9fdeb2f15f2034a0627233afc83de1ec92d4ef6cfc70bf5",
+      "sha256_lf": "f332201d0faf5ab27185bdb5be2ffa79cbb76e5872c69e319a8fa7088c9fb970",
       "content": {
         "format": "csv",
         "delimiter": ";",
@@ -288,6 +291,7 @@
       "file": "data/raw/external_evidence/EVT-2022-001_council_eu_sanctions_extract.txt",
       "size_bytes": 1045,
       "sha256": "d8821e704fa5f6ef5ec3cd92ab4a74017b6d78e91237479a4eda5305fc355d9e",
+      "sha256_lf": "d8821e704fa5f6ef5ec3cd92ab4a74017b6d78e91237479a4eda5305fc355d9e",
       "content": {
         "format": "txt"
       }
@@ -304,6 +308,7 @@
       "file": "data/raw/external_evidence/EVT-2024-001_imo_red_sea_statement.html",
       "size_bytes": 53008,
       "sha256": "a0475f567862de0c771622f1b9599ece34a0ef3de53bfc5df6df123e96612443",
+      "sha256_lf": "b11634e9069254a4ff4ad46deeb2b2914f990f94eada7994920bbd03969885ca",
       "content": {
         "format": "html"
       }
@@ -312,6 +317,7 @@
       "file": "data/raw/external_evidence/EVT-2024-002_imo_red_sea_resolution.html",
       "size_bytes": 50521,
       "sha256": "2801fb98287420c548cd15625e220ab8423bb066f35697d72fd75e67043a55ba",
+      "sha256_lf": "39c8e18bf17d1b1dec16f81e3cc2c5811228bd1484cfb46407077f57221e61de",
       "content": {
         "format": "html"
       }
@@ -320,6 +326,7 @@
       "file": "data/processed/public_procurement_exposure_scored.csv",
       "size_bytes": 24372750,
       "sha256": "0003450e4b14a072ca1b6861da6b2e60ef91d29eda3f5f4196bd078b86d8901c",
+      "sha256_lf": "69bf9d1ad82431828bbea38d75886290c99f429a06a1633e5e69c31e1a440e69",
       "content": {
         "format": "csv",
         "delimiter": ",",
@@ -397,6 +404,7 @@
       "file": "data/processed/external_events.csv",
       "size_bytes": 2932,
       "sha256": "632efe2f94394b65bb889eb65f861c767ba84e0f3bbc266fdc70a7c8cb673696",
+      "sha256_lf": "632efe2f94394b65bb889eb65f861c767ba84e0f3bbc266fdc70a7c8cb673696",
       "content": {
         "format": "csv",
         "delimiter": ",",
@@ -446,6 +454,7 @@
       "file": "data/processed/event_portfolio_matches.csv",
       "size_bytes": 23259,
       "sha256": "df1f24c6b67cfb4014c46d4fdb9d7a759275ed59d0462cc1384069290577f0a0",
+      "sha256_lf": "300e21c6406b53497edc18673eb28bb25bf8a34804ba0864df3c996e1bd2b494",
       "content": {
         "format": "csv",
         "delimiter": ",",
@@ -481,6 +490,7 @@
       "file": "data/processed/public_procurement_exposure_scored_with_event_context.csv",
       "size_bytes": 24648805,
       "sha256": "6c903cf258e7c39db74811ae25308f5515311468026c78b2fd2e8a9d95cc462c",
+      "sha256_lf": "2455f4067eb6f1061b1418e4dfc26449ffac546c85202e74dbf447df14785fb5",
       "content": {
         "format": "csv",
         "delimiter": ",",
@@ -574,6 +584,7 @@
       "file": "data/processed/score_sensitivity.csv",
       "size_bytes": 721,
       "sha256": "832bed9af3eeb77794933d2af3022d0d2e3cb589310d9278ee3a2a6819cb68a3",
+      "sha256_lf": "8d7b735b4ed42b28c43663ee55303aee6c208a7c5206beaf213a27a391fd3d5e",
       "content": {
         "format": "csv",
         "delimiter": ",",
@@ -609,6 +620,7 @@
       "file": "data/processed/event_window_sensitivity.csv",
       "size_bytes": 216,
       "sha256": "9d1e63a6136cee632b31ef55987405019f310709dc51c94e0a60afaab6b6c3f2",
+      "sha256_lf": "7357f99dae5245cf025ba94c79726d19a73c5ce5bd4ed6f0efeebca7d1679ceb",
       "content": {
         "format": "csv",
         "delimiter": ",",

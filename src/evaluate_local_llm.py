@@ -9,6 +9,8 @@ from __future__ import annotations
 
 import json
 import os
+import hashlib
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -76,7 +78,7 @@ def classify(title: str, summary: str) -> str:
 
 def main() -> None:
     labels = pd.read_csv(LABELS, dtype=str).fillna("")
-    if labels["label_event_family"].isin(CLASSES).all() is False:
+    if not labels["label_event_family"].isin(CLASSES).all():
         raise ValueError("The frozen annotation file contains an unsupported event family.")
 
     labels["local_llm_prediction"] = [
@@ -87,6 +89,8 @@ def main() -> None:
     matrix = confusion_matrix(target, prediction, labels=CLASSES)
     agreement_count = sum(expected == observed for expected, observed in zip(target, prediction))
     result = {
+        "generated_utc": datetime.now(timezone.utc).isoformat(),
+        "labels_sha256": hashlib.sha256(LABELS.read_bytes()).hexdigest(),
         "sample_size": len(labels),
         "exercise_type": "development_sample",
         "annotation_status": "researcher-created labels for selected official records",

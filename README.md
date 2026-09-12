@@ -31,7 +31,7 @@ The main portfolio comes from the Spanish public-procurement records retained in
 | Eligible rows before duplicate-link removal | 26,036 |
 | Duplicate source rows removed | 1,271 |
 | Unique published notices in the final portfolio | 24,765 |
-| Normalised awardee entities | 8,959 |
+| Normalised awardee display IDs | 8,959 |
 | Total published notice value | EUR 29.18 billion |
 | Official external-event records | 4 |
 | Notices linked to candidate event context at the selected 180-day window | 51 |
@@ -48,7 +48,7 @@ The event match does not change the structural score. This design avoids convert
 
 **A reproducible portfolio can be built from a much larger source.** The cleaning process reduced 97,154 raw rows to 24,765 unique, source-linked notices that meet the declared scope. Each retained row keeps its original source URL, awardee, contracting authority, category, date and published value.
 
-**The score produces a manageable review queue, but its weights matter.** The baseline 50/30/20 configuration places 2,683 notices in the `Priority review` band. An equal-weight scenario has a Spearman rank correlation of 0.959 with the baseline, yet only seven of the same ten notices remain in the top ten. This is why the dashboard shows each score component and the project reports sensitivity rather than treating the selected weights as objective truth.
+**The score produces a smaller upper review band, but its weights matter.** The baseline 50/30/20 configuration places 2,683 notices in the `Priority review` band. An equal-weight scenario has a Spearman rank correlation of 0.959 with the baseline, yet only seven of the same ten notices remain in the top ten. The dashboard shows each score component so a reviewer can understand this ordering. A company pilot would be needed to establish whether the resulting workload is manageable in practice.
 
 **Official events provide focused context rather than a second risk score.** At the selected 180-day window, the documented crosswalk links 51 distinct notices to candidate context: 50 to the 2022 European Union sanctions campaign and one to the Red Sea campaign. The Panama Canal campaign produces no match at this window. These results show exactly where the current rules find a connection and where they do not.
 
@@ -83,8 +83,8 @@ The first component identifies relatively large notices. The second measures how
 | Score | Review band |
 |---:|---|
 | Above 0.80 | Priority review |
-| 0.50 to 0.80 | Focused review |
-| Below 0.50 | Routine review |
+| Above 0.50 up to and including 0.80 | Focused review |
+| Up to and including 0.50 | Routine review |
 
 ## Repository map
 
@@ -126,6 +126,8 @@ python src/score_portfolio.py
 python src/match_events_to_portfolio.py
 python src/analyse_sensitivity.py
 python src/generate_source_audit.py
+python src/make_sensitivity_figure.py
+python src/execute_notebook.py
 python -m pytest -q
 ```
 
@@ -160,6 +162,10 @@ Real credentials belong only in the local `.env` file, which Git ignores. LM Stu
 
 ## Validation
 
+The [execution record](outputs/notebook_execution.json) identifies the latest complete local notebook run, its 21 executed code cells and the exact retained inputs. It distinguishes analytical re-execution from new API calls or model inference. The original local-model inference timestamp was not recorded, so a fresh notebook run must not be read as a new model evaluation.
+
+Saved discovery results retain their original retrieval dates. They do not promise that a provider or key works today. Use the optional health-check command for a current service check.
+
 The [GitHub Actions workflow](.github/workflows/validate.yml) runs the automated test suite after every push and pull request to `main`. The checks cover the declared portfolio scope, score calculation, event matching, sensitivity outputs, executed-notebook state, required documentation and public-package exclusions.
 
 Run the same validation locally with:
@@ -176,7 +182,8 @@ python -m pytest -q
 | [Banco de Espana EBAE sample](https://doi.org/10.48719/BELab.EBAE20T422T2_01) | Separate anonymised firm-survey ingestion example |
 | [Council of the European Union](https://www.consilium.europa.eu/en/press/press-releases/2022/04/08/eu-adopts-fifth-round-of-sanctions-against-russia-over-its-military-aggression-against-ukraine/) | Official sanctions record |
 | [Panama Canal Authority](https://pancanal.com/wp-content/uploads/2023/01/ADV48-2023-Reduction-in-Transits-Due-to-the-Ongoing-Deficit-in-Precipitation-in-the-Canal-Watershed.pdf) | Official canal transit record |
-| [International Maritime Organization](https://www.imo.org/en/mediacentre/pressbriefings/pages/red-sea-shipping.aspx) | Official Red Sea shipping record |
+| [International Maritime Organization statement archive](https://www.imo.org/en/mediacentre/pages/whatsnew-2023.aspx) | Retained Red Sea statement record |
+| [International Maritime Organization resolution](https://www.imo.org/en/mediacentre/pressbriefings/pages/imo-msc-resolution-red-sea.aspx) | Second official record in the same Red Sea campaign |
 
 The exact role, date, local file and processing stage for each retained source are documented in the [source register](docs/SOURCE_REGISTER.md).
 
@@ -185,6 +192,8 @@ The exact role, date, local file and processing stage for each retained source a
 Use the repository's **Cite this repository** menu or the metadata in [`CITATION.cff`](CITATION.cff). The recommended citation is:
 
 > Tebri, H. (2026). *Procurement Geopolitical Event Review (PGER): Public-data prototype for procurement review* (Version 1.0.0) [Computer software and data-analysis materials]. GitHub. https://github.com/hamzatebri/PGER-public-data-prototype
+
+The original `v1.0.0` release is retained unchanged for existing citations. The `main` branch includes later corrections. When citing those corrections, link to the full commit you reviewed rather than assuming that the original release contains them.
 
 ## Licence and evidence boundary
 

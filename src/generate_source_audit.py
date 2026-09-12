@@ -46,6 +46,8 @@ def inspect_file(relative_path: str, options: dict[str, str]) -> dict[str, objec
         "size_bytes": path.stat().st_size,
         "sha256": sha256(path),
     }
+    if path.suffix.lower() in {'.csv', '.txt', '.html'}:
+        record['sha256_lf'] = hashlib.sha256(path.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
     if path.suffix.lower() == ".csv":
         frame = pd.read_csv(path, sep=options["sep"], dtype=str, low_memory=False)
         record["content"] = {
@@ -65,6 +67,7 @@ def main() -> None:
     audit = {
         "generated_utc": datetime.now(timezone.utc).isoformat(),
         "purpose": "Submission source and processed-output identity check",
+        "hash_convention": "sha256 identifies local bytes. sha256_lf normalises CRLF to LF for text so Git checkouts on different platforms can be compared.",
         "files": [inspect_file(path, options) for path, options in FILES.items()],
     }
     OUTPUT.write_text(json.dumps(audit, ensure_ascii=False, indent=2), encoding="utf-8")

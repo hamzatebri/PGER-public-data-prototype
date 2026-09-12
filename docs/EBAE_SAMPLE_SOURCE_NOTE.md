@@ -26,6 +26,7 @@ The guide was downloaded from the official Banco de España website on
 - The file contains 47 quarterly observations from 15 distinct anonymised
   firm identifiers. It does not contain 47 independent firms.
 - It covers waves 1 to 7, from 2020 Q4 to 2022 Q2.
+- Across waves, some identifiers appear under more than one sector. The notebook therefore labels sector counts as non-exclusive firm-sector pairs, rather than implying that they add up to 15 separate firms.
 - The `impguerra_sum` variable is available in wave 7. Eight firms have a
   recorded answer: two `Very negative`, three `Negative`, three `Neutral`
   and none `Positive`.

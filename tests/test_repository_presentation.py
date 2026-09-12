@@ -8,6 +8,17 @@ README = ROOT / "README.md"
 NOTEBOOK = ROOT / "notebook" / "Hamza_Tebri_PGER_TFG_End_to_End.ipynb"
 
 
+def public_files():
+    if (ROOT / '.git').exists():
+        result = subprocess.run(['git', 'ls-files'], cwd=ROOT, check=True, capture_output=True, text=True)
+        return [path for path in result.stdout.splitlines() if (ROOT / path).is_file()]
+    ignored = {'.venv', '__pycache__', '.pytest_cache', '.ipynb_checkpoints', '.git'}
+    return [p.relative_to(ROOT).as_posix() for p in ROOT.rglob('*') if p.is_file()
+            and not ignored.intersection(p.relative_to(ROOT).parts)
+            and p.name != '.env' and not (p.name.startswith('.env.') and p.name != '.env.example')
+            and p.name != 'licitaciones_contrataciones_BOE_2014_2024.csv']
+
+
 def test_readme_visuals_and_services_are_complete():
     text = README.read_text(encoding="utf-8")
     for image in (
@@ -33,12 +44,12 @@ def test_readme_visuals_and_services_are_complete():
 
 
 def test_single_notebook_is_executed_without_error_outputs():
-    notebooks = list(ROOT.rglob("*.ipynb"))
+    notebooks = [ROOT / path for path in public_files() if path.endswith('.ipynb')]
     assert notebooks == [NOTEBOOK]
     payload = json.loads(NOTEBOOK.read_text(encoding="utf-8"))
     code_cells = [cell for cell in payload["cells"] if cell["cell_type"] == "code"]
     assert code_cells
-    assert all(cell.get("execution_count") is not None for cell in code_cells)
+    assert [cell.get("execution_count") for cell in code_cells] == list(range(1, len(code_cells) + 1))
     assert not [
         output
         for cell in code_cells
@@ -48,17 +59,10 @@ def test_single_notebook_is_executed_without_error_outputs():
 
 
 def test_private_and_submission_files_are_not_present():
-    assert not (ROOT / ".env").exists()
-    assert not list(ROOT.rglob("*.doc"))
-    assert not list(ROOT.rglob("*.docx"))
-    assert not (ROOT / "thesis").exists()
-    assert not (
-        ROOT
-        / "data"
-        / "raw"
-        / "boe_procurement"
-        / "licitaciones_contrataciones_BOE_2014_2024.csv"
-    ).exists()
+    tracked = public_files()
+    assert '.env' not in tracked
+    assert not [p for p in tracked if p.endswith(('.doc', '.docx')) or p.startswith('thesis/')]
+    assert not any(p.endswith('licitaciones_contrataciones_BOE_2014_2024.csv') for p in tracked)
 
 
 def test_public_entry_points_exist():
@@ -74,14 +78,7 @@ def test_public_entry_points_exist():
 
 
 def test_tracked_files_contain_no_development_debris():
-    tracked = subprocess.run(
-        ["git", "ls-files"],
-        cwd=ROOT,
-        check=True,
-        capture_output=True,
-        text=True,
-    ).stdout.splitlines()
-    tracked = [path for path in tracked if (ROOT / path).exists()]
+    tracked = public_files()
 
     forbidden_names = (
         "__pycache__",

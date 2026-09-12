@@ -444,7 +444,7 @@ with tab_priority:
             concentration_note = f" {n_categories} categories appear in the current top {len(top)}."
         st.caption(
             "Rank #1 (top row) has the highest review-priority score; the gold diamond is that score, "
-            "the three coloured dots are its components (Section 3.7), and the axis is zoomed because "
+                "the three coloured dots are its components (Section 3.5), and the axis is zoomed because "
             "the leading scores cluster within a narrow interval - "
             f"an unzoomed 0-1 bar would show {len(top)} nearly identical bars. Hover over a point or use "
             f"the table below to inspect the exact value, date and category.{concentration_note}"
@@ -540,6 +540,7 @@ with tab_event:
             text=[f"  {n} notice{'s' if n != 1 else ''} | EUR {v/1e6:,.1f}M | {c}"
                   for n, v, c in zip(camp_summary["notices"], camp_summary["value_eur"], camp_summary["category_proxy"])],
             textposition="outside", textfont={"size": 12, "color": "#c3c2b7"},
+            cliponaxis=False,
             hovertemplate="%{y}: %{x} notices<extra></extra>",
         ))
         fig_camp.update_layout(
@@ -845,10 +846,9 @@ with tab_ebae:
         )
         st.plotly_chart(fig_war, width='stretch')
         st.caption(
-            "Independent, general Spanish-firm survey evidence about the war in Ukraine as a macro "
-            "phenomenon.  \n"
-            "Not evidence about any specific BOE-matched exposure, and not the same firms as the BOE "
-            "portfolio (matches Figure A1 in the thesis)."
+            "This supplementary survey sample describes the eight firms that answered this question. "
+            "It illustrates their reported experience rather than estimating an effect for all Spanish firms. "
+            "These anonymised respondents are separate from the procurement portfolio."
         )
 
     if "rama12" in ebae.columns:
@@ -924,7 +924,9 @@ with tab_live:
         live_df = pd.read_csv(latest)
         col_a, col_b, col_c, col_d = st.columns(4)
         col_a.metric("Candidates retrieved", f"{len(live_df):,}")
-        col_b.metric("Assigned to an event family", f"{int((live_df['local_llm_predicted_family'] != 'not_relevant').sum()):,}")
+        valid_families = {'trade_policy', 'logistics_transport', 'conflict_security'}
+        classified = live_df['local_llm_predicted_family'].isin(valid_families | {'not_relevant'})
+        col_b.metric("Assigned to an event family", f"{int(live_df['local_llm_predicted_family'].isin(valid_families).sum()):,}")
         routine_sources = 5
         col_c.metric(
             "Routine sources represented",
@@ -1002,12 +1004,13 @@ with tab_live:
             )
             st.plotly_chart(fig_prov, width='stretch', config={"displayModeBar": False})
         with col_agree:
-            agree = (live_df["target_family_queried"] == live_df["local_llm_predicted_family"]).sum()
-            disagree = len(live_df) - agree
+            agree = (classified & (live_df["target_family_queried"] == live_df["local_llm_predicted_family"])).sum()
+            disagree = int(classified.sum()) - agree
+            unavailable = int((~classified).sum())
             st.markdown("**Local model vs. the search query it came from**")
             fig_agree = go.Figure(go.Bar(
-                x=[agree, disagree], y=["Agrees with query", "Reclassified by model"], orientation="h",
-                marker_color=["#1baf7a", "#eb6834"], text=[str(agree), str(disagree)],
+                x=[agree, disagree, unavailable], y=["Agrees with query", "Different classification", "Classification unavailable"], orientation="h",
+                marker_color=["#1baf7a", "#eb6834", "#898781"], text=[str(agree), str(disagree), str(unavailable)],
                 textposition="outside", textfont={"size": 11, "color": "#c3c2b7"},
             ))
             fig_agree.update_layout(
@@ -1017,8 +1020,9 @@ with tab_live:
             )
             st.plotly_chart(fig_agree, width='stretch', config={"displayModeBar": False})
             st.caption(
-                f"{disagree} of {len(live_df)} candidates were assigned a different family from the one "
-                "used in their search query. This is a live workflow check, not a performance metric."
+                f"{disagree} of {int(classified.sum())} classified candidates differed from their search query. "
+                f"Classification was unavailable for {unavailable} candidates. "
+                "Query topics are not verified labels, so this comparison does not measure accuracy."
             )
 
         display_cols = ["source", "title", "target_family_queried", "local_llm_predicted_family", "published_date", "url"]
@@ -1038,7 +1042,9 @@ with tab_live:
             file_name="pger_live_discovery_candidates.csv",
             mime="text/csv",
         )
-        st.caption(f"Snapshot: {latest.name} (generated {latest.stat().st_mtime and pd.Timestamp(latest.stat().st_mtime, unit='s').date()}). Re-run the script above to refresh.")
+        retrieved = pd.to_datetime(live_df.get('retrieved_at'), errors='coerce', utc=True)
+        snapshot_date = str(retrieved.max()) if retrieved is not None and retrieved.notna().any() else 'retrieval time not recorded'
+        st.caption(f"Saved snapshot: {latest.name}. Last recorded retrieval: {snapshot_date}. These are saved results, not a current availability check. Re-run the script above to refresh.")
     else:
         st.write("No live snapshot found yet. Run `python src/live_evidence_discovery.py` to generate one.")
 

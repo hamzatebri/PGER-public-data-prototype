@@ -4,7 +4,7 @@
 
 The main portfolio uses awarded public-procurement records from the BOE dataset released at Zenodo record 18712463. This is a secondary public dataset containing observed fields such as contracting institution, date, procedure, CPV information, awarded value, awardee name, and the BOE source link.
 
-The analytical unit is a public-procurement exposure: an awarded contract characterised by its contracting authority, awardee, category, value, timing, and available geography. The awardee is an economic operator in a public contract. It is not automatically treated as a verified upstream supplier, importer, manufacturer, or private-SME supplier.
+The analytical unit is a unique published procurement notice, identified by its source URL and described by the retained authority, awardee, category, value, date and geography fields. A notice is not necessarily one distinct contract or a complete list of all awards. The awardee is an economic operator in public procurement, rather than a verified upstream supplier in a private-company supply chain.
 
 ## Rejected evidence for headline findings
 
