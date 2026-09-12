@@ -214,7 +214,11 @@ class EventMatchingTests(unittest.TestCase):
         self.assertRegex(manifest["boe_input_sha256"], r"^[0-9a-f]{64}$")
         self.assertEqual(manifest["total_portfolio_rows"], len(self.scored_rows))
         self.assertEqual(manifest["union_matched_exposures"], 51)
-        self.assertEqual(sum(manifest["matches_by_campaign"].values()), len(self.matches))
+        expected_campaign_counts = {
+            campaign_id: len({row["exposure_id"] for row in self.matches if row["event_campaign_id"] == campaign_id})
+            for campaign_id in {row["event_campaign_id"] for row in self.matches}
+        }
+        self.assertEqual(manifest["matches_by_campaign"], expected_campaign_counts)
 
     def test_event_context_flag_is_not_used_in_review_priority_score(self):
         for row in self.wide_rows[::997]:
