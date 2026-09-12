@@ -193,7 +193,7 @@ Use the repository's **Cite this repository** menu or the metadata in [`CITATION
 
 > Tebri, H. (2026). *Procurement Geopolitical Event Review (PGER): Public-data prototype for procurement review* (Version 1.0.0) [Computer software and data-analysis materials]. GitHub. https://github.com/hamzatebri/PGER-public-data-prototype
 
-The original `v1.0.0` release is retained unchanged for existing citations. The `main` branch includes later corrections. When citing those corrections, link to the full commit you reviewed rather than assuming that the original release contains them.
+The `v1.0.0` release was refreshed on 12 September 2026 to include the repository corrections supporting thesis Version 4, the latest executed notebook and updated dashboard screenshots. Its release URL stays the same. Earlier downloads may contain the previous package, so download it again when reproducing this revision. Commit-specific links continue to identify their original contents.
 
 ## Licence and evidence boundary
 
