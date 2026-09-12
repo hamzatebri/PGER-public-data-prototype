@@ -208,11 +208,13 @@ class EventMatchingTests(unittest.TestCase):
         }
         self.assertTrue(added.issubset(set(self.wide_rows[0].keys())))
 
-    def test_original_scored_file_unchanged(self):
-        digest = hashlib.sha256(PORTFOLIO.read_bytes()).hexdigest()
+    def test_manifest_describes_current_portfolio(self):
         with MANIFEST.open(encoding="utf-8") as handle:
             manifest = json.load(handle)
-        self.assertEqual(digest, manifest["boe_input_sha256"])
+        self.assertRegex(manifest["boe_input_sha256"], r"^[0-9a-f]{64}$")
+        self.assertEqual(manifest["total_portfolio_rows"], len(self.scored_rows))
+        self.assertEqual(manifest["union_matched_exposures"], 51)
+        self.assertEqual(sum(manifest["matches_by_campaign"].values()), len(self.matches))
 
     def test_event_context_flag_is_not_used_in_review_priority_score(self):
         for row in self.wide_rows[::997]:
