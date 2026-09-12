@@ -45,7 +45,7 @@ def test_execution_record_matches_notebook_and_available_inputs():
     import json
     def digest(path):
         data = path.read_bytes()
-        if path.suffix.lower() in {'.csv', '.txt', '.json', '.ipynb', '.md', '.html', '.svg', '.py', '.toml'}:
+        if path.suffix.lower() in {'.csv', '.txt', '.json', '.ipynb', '.md', '.html', '.svg', '.py', '.ps1', '.toml'}:
             data = data.replace(b'\r\n', b'\n')
         return hashlib.sha256(data).hexdigest()
     record = json.loads((ROOT / 'outputs/notebook_execution.json').read_text())

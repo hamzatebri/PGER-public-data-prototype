@@ -19,7 +19,7 @@ NOTEBOOK = ROOT / 'notebook/Hamza_Tebri_PGER_TFG_End_to_End.ipynb'
 
 def sha256(path):
     data = path.read_bytes()
-    if path.suffix.lower() in {'.csv', '.txt', '.json', '.ipynb', '.md', '.html', '.svg', '.py', '.toml'}:
+    if path.suffix.lower() in {'.csv', '.txt', '.json', '.ipynb', '.md', '.html', '.svg', '.py', '.ps1', '.toml'}:
         data = data.replace(b'\r\n', b'\n')
     return hashlib.sha256(data).hexdigest()
 
