@@ -1,0 +1,61 @@
+{
+  "tavily": {
+    "configured": true,
+    "ok": true,
+    "queries_attempted": 3,
+    "queries_failed": 0,
+    "candidates_retrieved": 9,
+    "last_error": null
+  },
+  "guardian": {
+    "configured": true,
+    "ok": true,
+    "queries_attempted": 3,
+    "queries_failed": 0,
+    "candidates_retrieved": 7,
+    "last_error": null
+  },
+  "newsapi": {
+    "configured": true,
+    "ok": true,
+    "queries_attempted": 3,
+    "queries_failed": 0,
+    "candidates_retrieved": 5,
+    "last_error": null
+  },
+  "gnews": {
+    "configured": true,
+    "ok": true,
+    "queries_attempted": 3,
+    "queries_failed": 0,
+    "candidates_retrieved": 1,
+    "last_error": null
+  },
+  "newsdata": {
+    "configured": true,
+    "ok": true,
+    "queries_attempted": 3,
+    "queries_failed": 0,
+    "candidates_retrieved": 3,
+    "last_error": null
+  },
+  "gdelt": {
+    "configured": true,
+    "ok": true,
+    "status": "checked_separately",
+    "queries_attempted": 0,
+    "queries_failed": 0,
+    "candidates_retrieved": 0,
+    "last_error": null,
+    "last_checked_utc": "2026-09-11T21:48:46.046565+00:00",
+    "note": "Not queried during the batch refresh. GDELT DOC is checked separately with one request because its public endpoint is quota-limited."
+  },
+  "lm_studio": {
+    "configured": true,
+    "ok": true,
+    "queries_attempted": 25,
+    "queries_failed": 0,
+    "candidates_retrieved": 25,
+    "last_error": null
+  }
+}

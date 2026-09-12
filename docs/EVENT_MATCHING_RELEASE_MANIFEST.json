@@ -1,0 +1,13 @@
+{
+  "boe_input_sha256": "0003450e4b14a072ca1b6861da6b2e60ef91d29eda3f5f4196bd078b86d8901c",
+  "crosswalk_version": "v1-international-scope-only-temporal-window",
+  "events_input_sha256": "632efe2f94394b65bb889eb65f861c767ba84e0f3bbc266fdc70a7c8cb673696",
+  "generated_utc": "2026-09-12T07:07:12.281558+00:00",
+  "matches_by_campaign": {
+    "CAMPAIGN-EU-SANCTIONS-2022": 50,
+    "CAMPAIGN-RED-SEA-2024": 1
+  },
+  "total_portfolio_rows": 24765,
+  "union_matched_exposures": 51,
+  "union_matched_share": 0.002059
+}

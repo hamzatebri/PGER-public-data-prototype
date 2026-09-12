@@ -1,0 +1,9 @@
+scenario,value_weight,authority_awardee_value_share_weight,authority_awardee_notice_share_weight,spearman_with_baseline,top_10_overlap,top_10_overlap_share,top_100_overlap,top_100_overlap_share,priority_review_notices
+Baseline 50/30/20,0.5,0.3,0.2,1.0,10,1.0,100,1.0,2683
+Equal weights,0.333333,0.333333,0.333333,0.959202,7,0.7,72,0.72,2423
+Value-heavy,0.7,0.2,0.1,0.964146,6,0.6,70,0.7,3445
+Value-share-heavy,0.3,0.5,0.2,0.971853,9,0.9,80,0.8,2960
+Notice-share-heavy,0.3,0.2,0.5,0.889506,4,0.4,52,0.52,2275
+No value component,0.0,0.6,0.4,0.807418,1,0.1,18,0.18,4121
+No value-share component,0.714286,0.0,0.285714,0.968521,8,0.8,89,0.89,2346
+No notice-share component,0.625,0.375,0.0,0.971515,0,0.0,27,0.27,3790

@@ -1,0 +1,6 @@
+check,observed_value,decision
+eligible_rows_before_notice_deduplication,26036,profiled
+repeated_source_url_groups,1271,one first award row retained per URL
+duplicate_parser_rows_removed,1271,removed
+unique_source_urls_after_cleaning,24765,required unique
+normalised_awardee_entities,8959,used for concentration and display IDs

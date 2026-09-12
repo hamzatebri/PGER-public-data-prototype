@@ -1,0 +1,8 @@
+PGER review-priority score definition
+Generated UTC: 2026-09-12T07:07:06.977080+00:00
+Purpose: order observed public procurement exposures for earlier review.
+Components: 50% contract-value percentile, 30% authority-awardee awarded-value-share percentile, 20% authority-awardee notice-share percentile.
+Denominators: the value share is the awardee entity's awarded value divided by the observed authority's awarded value; the notice share is the entity's notice count divided by the authority's notice count.
+Interpretation: a higher score indicates a higher review priority within this declared portfolio.
+Use: the score orders records inside this public portfolio; a business decision also needs current contract and operational information.
+Output SHA-256: 0003450e4b14a072ca1b6861da6b2e60ef91d29eda3f5f4196bd078b86d8901c

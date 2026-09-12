@@ -1,0 +1,16 @@
+Local evidence extract for EVT-2022-001
+
+Publisher: Council of the European Union
+Published: 8 April 2022
+Title: EU adopts fifth round of sanctions against Russia over its military aggression against Ukraine
+Direct source: https://www.consilium.europa.eu/en/press/press-releases/2022/04/08/eu-adopts-fifth-round-of-sanctions-against-russia-over-its-military-aggression-against-ukraine/
+PDF endpoint: https://www.consilium.europa.eu/en/press/press-releases/2022/04/08/eu-adopts-fifth-round-of-sanctions-against-russia-over-its-military-aggression-against-ukraine/pdf/
+Checked: 11 September 2026
+
+Recorded facts used in PGER:
+- The Council announced a fifth package of economic and individual sanctions.
+- The measures included a restriction on Russian coal and other solid fossil fuels.
+- The measures also restricted Russian participation in public procurement in EU member states.
+
+Preservation note: the Council website blocked an automated local PDF download.
+This concise project extract records the facts used and the direct official URLs.

@@ -1,0 +1,22 @@
+{
+  "sample_size": 14,
+  "exercise_type": "development_sample",
+  "annotation_status": "researcher-created labels for selected official records",
+  "model": "openai/gpt-oss-20b",
+  "backend": "LM Studio local server at 127.0.0.1:1234",
+  "prompt_version": "event-family-v1",
+  "temperature": 0,
+  "seed": 42,
+  "labels_sent_to_model": false,
+  "classes": [
+    "trade_policy",
+    "logistics_transport",
+    "conflict_security"
+  ],
+  "agreement_count": 14,
+  "confusion_matrix": [
+    [5, 0, 0],
+    [0, 1, 0],
+    [0, 0, 8]
+  ]
+}

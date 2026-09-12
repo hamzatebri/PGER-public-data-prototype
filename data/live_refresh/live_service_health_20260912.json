@@ -1,0 +1,60 @@
+{
+  "generated_utc": "2026-09-12T00:43:24.981194+00:00",
+  "request_policy": "one result requested per keyed provider; GDELT is checked at most once per 24 hours; credentials omitted",
+  "services": {
+    "tavily": {
+      "configured": true,
+      "ok": true,
+      "result_count": 1,
+      "error": null,
+      "status": "checked_now",
+      "checked_at": "2026-09-12T00:43:22.281581+00:00"
+    },
+    "guardian": {
+      "configured": true,
+      "ok": true,
+      "result_count": 1,
+      "error": null,
+      "status": "checked_now",
+      "checked_at": "2026-09-12T00:43:22.769942+00:00"
+    },
+    "newsapi": {
+      "configured": true,
+      "ok": true,
+      "result_count": 1,
+      "error": null,
+      "status": "checked_now",
+      "checked_at": "2026-09-12T00:43:23.173001+00:00"
+    },
+    "gnews": {
+      "configured": true,
+      "ok": true,
+      "result_count": 1,
+      "error": null,
+      "status": "checked_now",
+      "checked_at": "2026-09-12T00:43:23.713550+00:00"
+    },
+    "newsdata": {
+      "configured": true,
+      "ok": true,
+      "result_count": 1,
+      "error": null,
+      "status": "checked_now",
+      "checked_at": "2026-09-12T00:43:24.630291+00:00"
+    },
+    "gdelt": {
+      "configured": true,
+      "ok": true,
+      "result_count": 1,
+      "error": null,
+      "status": "cached_recent_check",
+      "checked_at": "2026-09-12T00:16:24.868723+00:00"
+    },
+    "lm_studio": {
+      "configured": true,
+      "ok": true,
+      "result_count": 1,
+      "error": null
+    }
+  }
+}

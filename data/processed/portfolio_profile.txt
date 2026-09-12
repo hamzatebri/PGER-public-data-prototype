@@ -1,0 +1,14 @@
+PGER public-procurement exposure portfolio
+Generated UTC: 2026-09-12T07:07:05.545171+00:00
+Scope: BOE records dated 2022-01-01 through 2024-12-31
+Eligibility: Tipo=Contratación, 2022-2024, named awardee, parseable awarded value, one first award record per source URL
+Eligible rows before source-parser duplicate removal: 26036
+Source-parser duplicate rows removed: 1271
+Published notice records: 24765
+Distinct procurement references: 21674
+Normalised awardee entities: 8959
+Total published notice value EUR: 29182382406.81
+Output SHA-256: 27cb5be2c958161078963870899cff65c744209e00371f7053f7c53d5838ae92
+Raw source SHA-256: d40c6d8318075b48a6aeba376a1b7300f5ac363aaeb8d314534bdd4918b5256e
+Interpretation: each row is one published BOE source notice with a named awardee and awarded value.
+Case, accent, punctuation and spacing variants share one grouping key; the original awardee name remains available for traceability.

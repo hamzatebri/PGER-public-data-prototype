@@ -1,0 +1,29 @@
+# Private credentials
+.env
+.env.*
+!.env.example
+
+# Downloaded source data
+data/raw/boe_procurement/*.csv
+data/raw/boe_procurement/*.part
+
+# Python and notebook caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# Local runtime outputs
+.streamlit/
+*.log
+Thumbs.db
+.DS_Store
+
+# Thesis documents are intentionally outside the public repository
+*.doc
+*.docx
+*.pdf
+!data/raw/ebae_sample/*.pdf
+!data/raw/external_evidence/*.pdf
