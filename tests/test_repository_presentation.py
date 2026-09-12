@@ -1,4 +1,5 @@
 import json
+import subprocess
 from pathlib import Path
 
 
@@ -70,3 +71,44 @@ def test_public_entry_points_exist():
         ROOT / "THIRD_PARTY_NOTICES.md",
     ):
         assert path.exists()
+
+
+def test_tracked_files_contain_no_development_debris():
+    tracked = subprocess.run(
+        ["git", "ls-files"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.splitlines()
+    tracked = [path for path in tracked if (ROOT / path).exists()]
+
+    forbidden_names = (
+        "__pycache__",
+        ".pyc",
+        ".pytest_cache",
+        ".ipynb_checkpoints",
+        "thumbs.db",
+        ".ds_store",
+        "backup",
+        "draft",
+        "conversation",
+        "chat_history",
+    )
+    assert not [path for path in tracked if any(term in path.lower() for term in forbidden_names)]
+
+    public_text = "\n".join(
+        (ROOT / path).read_text(encoding="utf-8", errors="ignore")
+        for path in tracked
+        if Path(path).suffix.lower() in {".md", ".txt", ".py", ".yml", ".yaml", ".cff", ".json"}
+    ).lower()
+    for private_context in (
+        "c:\\users\\" + "hamza",
+        "c:/users/" + "hamza",
+        "cl" + "aude",
+        "chat" + "gpt",
+        "perplex" + "ity",
+        "kri" + "sp",
+        "promoter" + " feedback",
+    ):
+        assert private_context not in public_text
