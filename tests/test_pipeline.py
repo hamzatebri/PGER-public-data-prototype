@@ -1,13 +1,12 @@
 import csv
 import hashlib
 import json
-import subprocess
-import sys
 import unittest
 from datetime import datetime
 from pathlib import Path
 
 from src.build_portfolio import normalise_entity_name
+from src.match_events_to_portfolio import build_matches, load_events, load_scored, summarize_onto_scored
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -171,10 +170,6 @@ class EventDevelopmentSampleTests(unittest.TestCase):
 class EventMatchingTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        subprocess.run(
-            [sys.executable, str(ROOT / "src" / "match_events_to_portfolio.py")],
-            check=True, cwd=ROOT,
-        )
         with MATCHES.open(encoding="utf-8", newline="") as handle:
             cls.matches = list(csv.DictReader(handle))
         with WIDE.open(encoding="utf-8", newline="") as handle:
@@ -183,6 +178,15 @@ class EventMatchingTests(unittest.TestCase):
             cls.scored_rows = list(csv.DictReader(handle))
         with EVENTS.open(encoding="utf-8", newline="") as handle:
             cls.events = {row["event_id"]: row for row in csv.DictReader(handle)}
+
+        recomputed_scored = load_scored()
+        recomputed_matches = build_matches(recomputed_scored, load_events())
+        cls.recomputed_matches = recomputed_matches
+        cls.recomputed_wide_rows = summarize_onto_scored(recomputed_scored, recomputed_matches)
+
+    def test_committed_event_outputs_match_current_rules(self):
+        self.assertEqual(self.matches, self.recomputed_matches)
+        self.assertEqual(self.wide_rows, self.recomputed_wide_rows)
 
     def test_matches_schema(self):
         expected = {

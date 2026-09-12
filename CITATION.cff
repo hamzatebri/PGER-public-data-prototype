@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this project, please cite it using the metadata below."
+title: "Procurement Geopolitical Event Review (PGER): Public-data prototype for procurement review"
+type: software
+authors:
+  - family-names: Tebri
+    given-names: Hamza
+repository-code: "https://github.com/hamzatebri/PGER-public-data-prototype"
+url: "https://github.com/hamzatebri/PGER-public-data-prototype"
+version: 1.0.0
+date-released: 2026-09-12
+license: MIT
+keywords:
+  - business intelligence
+  - data analytics
+  - procurement
+  - geopolitical events
+  - reproducible research
+  - Streamlit
+  - Jupyter Notebook
